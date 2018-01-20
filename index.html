@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/reset.css" type="text/css" />
+    <link rel="stylesheet" href="css/blue.css" type="text/css" />
+</head>
+<body>
+    <textarea id="lrc_content" name="textfield" cols="70" rows="10" style="display:none;"> 
+        [00:03.00]方圆几里
+        [00:06.00]演唱：啦啦啦
+        [00:09.00]
+        [00:18.38]感觉很诚恳是好事
+        [00:22.38]
+        [00:26.23]不需要发誓那么幼稚
+        [00:29.38]
+        [00:34.88]本以为可以
+        [00:38.88]就这样随你
+        [00:42.74]反正我也无处可去
+        [00:51.48]我怕太负责任的人
+        [00:59.90]以为他随时会牺牲
+        [01:07.46]爱不爱都可以
+        [01:11.66]我怎样都依你
+        [01:13.40]连借口我都帮你寻
+        [01:21.26]与其在你不要的世界里
+        [01:25.69]不如痛快把你忘记
+        [01:30.76]这道理谁都懂 说容易 爱淡了还要嘴硬
+        [01:37.60]我宁愿留在你方圆几里
+        [01:42.30]我的心要不会就送你
+        [01:46.11]因为我爱你和你没关系
+        [01:51.11]
+        [02:13.57]感觉会压抑的样子
+        [02:15.57]
+        [02:20.66]勉强也没什么意思
+        [02:24.66]
+        [02:28.41]我不算很自私
+        [02:32.48]也越来越懂事
+        [02:35.58]爱你只是我的事
+        [02:42.51]与其在你不要的世界里
+        [02:46.15]不如痛快把你忘记
+        [02:51.55]这道理谁都懂 说容易 爱痛了还要嘴硬
+        [02:58.65]我宁愿留在你方圆几里
+        [03:03.84]至少能感受你的悲喜
+        [03:08.84]在你需要我的时候 就能陪你
+        [03:13.00]
+        [03:15.00]我在你不要的世界里
+        [03:19.00]何苦不找个人来代替
+        [03:24.00]可惜我谁劝都不听
+        [03:31.00]我宁愿留在你方圆几里
+        [03:35.00]我的心要不会就送你
+        [03:40.00]
+        [03:41.00]爱不爱都可以
+        [03:45.00]我怎样都依你
+        [03:48.00]因为我爱你和你没关系
+        [03:53.00]
+        [03:55.90]我的爱扩散在方圆几里
+        [04:00.00]近的能听见你的呼吸
+        [04:04.00]只要你转身
+        [04:06.00]我就在这里
+    </textarea>
+    <div class="music_box">
+        <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+        <div id="jp_container_1" class="jp-audio">
+            <div class="jp-type-single">
+                <div class="jp-gui jp-interface">
+                    <ul class="jp-controls">
+                        <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                        <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+                        <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+                        <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+                        <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+                        <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+                    </ul>
+                    <div class="jp-progress">
+                        <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
+                        </div>
+                    </div>
+                    <div class="jp-volume-bar">
+                        <div class="jp-volume-bar-value"></div>
+                    </div>
+                    <div class="jp-time-holder">
+                        <div class="jp-current-time"></div>
+                        <div class="jp-duration"></div>
+                        <ul class="jp-toggles">
+                            <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+                            <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="jp-no-solution"> 
+                    <span>Update Required</span> To play the media you will need to either update your browser to a recent version or update your 
+                    <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>. 
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <ul id="lrc_list">
+                <li>点击开始播放……</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.jplayer.js"></script>
+    <script src="js/lrc.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#jquery_jplayer_1").jPlayer({
+                ready: function (event) {
+                    $(this).jPlayer("setMedia", {
+                        mp3:"a.mp3" //mp3的播放地址
+                    });
+                },
+                timeupdate: function(event) {
+                    if(event.jPlayer.status.currentTime==0){
+                        time = "";
+                    }else {
+                        time = event.jPlayer.status.currentTime;
+                    }
+                },
+                play: function(event) {
+                    //点击开始方法调用lrc。start歌词方法 返回时间time
+                    $.lrc.start($('#lrc_content').val(), function() {
+                        return time;
+                    });
+                },
+                ended:function(event){
+                    $("#lrc_list").removeAttr("style").html("<li>歌曲播放完毕！</li>");
+                },
+                swfPath: "/js",         //存放jplayer.swf的决定路径
+                solution:"html, flash", //支持的页面
+                supplied: "mp3",        //支持的音频的格式
+                wmode: "window"
+            });
+        });
+    </script>
+</body>
+</html>
